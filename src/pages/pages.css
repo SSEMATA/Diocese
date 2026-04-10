@@ -6009,8 +6009,7 @@ tbody tr:hover {
    Topbar — centered search
 ══════════════════════════════════════════ */
 .dashboard-topbar {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 20px;
@@ -6021,21 +6020,24 @@ tbody tr:hover {
   position: sticky;
   top: 0;
   z-index: 15;
+  min-width: 0;
+  overflow: hidden;
 }
 
-.topbar-left { min-width: 0; }
+.topbar-left { display: none; }
 
 .topbar-center {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   max-width: 520px;
-  justify-self: center;
 }
 
 .topbar-actions {
   display: flex;
   align-items: center;
   gap: 8px;
-  justify-content: flex-end;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* ══════════════════════════════════════════
@@ -8281,8 +8283,11 @@ button.sr-card {
     gap: 8px;
     padding: 10px 12px;
     overflow: hidden;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     z-index: 30;
     transition: transform 0.22s ease, opacity 0.22s ease;
     background: var(--color-bg-primary);
@@ -8296,6 +8301,10 @@ button.sr-card {
   .dashboard-topbar.visible {
     transform: translateY(0);
     opacity: 1;
+  }
+
+  .dashboard-content {
+    padding-top: 58px;
   }
 
   /* Hide the empty spacer */
@@ -8859,4 +8868,109 @@ html, body, #root {
 /* Section header */
 .section-header {
   border-color: var(--surface-card-border);
+}
+
+/* ── Topbar responsive fix ── */
+.dashboard-topbar {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 12px;
+  padding: 10px 20px;
+  overflow: visible;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.topbar-left { display: none !important; }
+
+.topbar-center {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  max-width: 520px !important;
+  width: auto !important;
+}
+
+.topbar-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
+}
+
+@media (max-width: 768px) {
+  .dashboard-topbar {
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    z-index: 30 !important;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    background: var(--color-bg-primary) !important;
+  }
+
+  .dashboard-topbar.hidden {
+    transform: translateY(-110%) !important;
+    opacity: 0 !important;
+  }
+
+  .dashboard-topbar.visible {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+
+  .dashboard-content { padding-top: 58px !important; }
+
+  .topbar-center {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  .gs-input-wrap { padding: 7px 10px !important; gap: 6px !important; }
+  .gs-input { font-size: 0.8rem !important; min-width: 0 !important; }
+
+  .gs-search-btn {
+    padding: 5px 8px !important;
+    font-size: 0 !important;
+    gap: 0 !important;
+    min-width: 30px !important;
+    justify-content: center !important;
+  }
+
+  .gs-search-btn svg { font-size: 0.85rem !important; }
+
+  .topbar-actions {
+    gap: 4px !important;
+    flex-shrink: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .icon-btn,
+  .user-pill {
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+  }
+
+  .user-pill span { display: none !important; }
+
+  .topbar-hamburger {
+    width: 34px !important;
+    height: 34px !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .dashboard-topbar { gap: 5px !important; padding: 8px 10px !important; }
+  .gs-input-wrap { padding: 6px 8px !important; }
+  .notification-bell-btn { display: none !important; }
 }

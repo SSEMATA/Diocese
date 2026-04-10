@@ -96,9 +96,9 @@ function App() {
       const scrolledUp = currentScroll < lastScroll - 8
 
       if (scrolledDown) {
-        setTopbarVisible(true)
-      } else if (scrolledUp) {
         setTopbarVisible(false)
+      } else if (scrolledUp) {
+        setTopbarVisible(true)
       }
 
       scrollRef.current = Math.max(currentScroll, 0)
