@@ -322,6 +322,15 @@ function App() {
             <SettingsPage onNavigateToPage={setActivePage} />
           )}
         </main>
+        <footer className="dashboard-footer">
+          <div className="footer-copy">
+            © 2026 Fort Portal Diocese. Built for land stewardship and parish management.
+          </div>
+          <div className="footer-links">
+            <button type="button" className="footer-link" onClick={() => setActivePage('Settings')}>Settings</button>
+            <button type="button" className="footer-link" onClick={() => setActivePage('Dashboard')}>Home</button>
+          </div>
+        </footer>
       </div>
     </div>
   )
