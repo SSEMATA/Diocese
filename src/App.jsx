@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   FiBell, FiUser, FiHome, FiLayers, FiFileText,
   FiMapPin, FiBarChart2, FiChevronLeft, FiChevronRight,
@@ -32,6 +32,13 @@ function App() {
     const saved = localStorage.getItem('currentUser')
     return saved ? JSON.parse(saved) : null
   })
+
+  useEffect(() => {
+    document.body.style.overflow = mobileNavOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileNavOpen])
   const { parcels, updateParcel } = useParcels()
 
   const handleSearch = (q) => { setSearchQuery(q); setSearchResult(null) }
@@ -40,6 +47,13 @@ function App() {
   const navigate = (page) => {
     setActivePage(page)
     setMobileNavOpen(false)
+  }
+
+  const toggleMobileNav = () => {
+    if (!mobileNavOpen) {
+      setSidebarCollapsed(false)
+    }
+    setMobileNavOpen((prev) => !prev)
   }
 
   const navItems = [
@@ -117,14 +131,16 @@ function App() {
               <div className="user-role">{currentUser ? currentUser.role : 'Please Login'}</div>
             </div>
           )}
-          <button
-            type="button"
-            className="sidebar-collapse-btn"
-            onClick={() => setSidebarCollapsed(p => !p)}
-            title={sidebarCollapsed ? 'Expand' : 'Collapse'}
-          >
-            {sidebarCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
-          </button>
+          {!mobileNavOpen && (
+            <button
+              type="button"
+              className="sidebar-collapse-btn"
+              onClick={() => setSidebarCollapsed(p => !p)}
+              title={sidebarCollapsed ? 'Expand' : 'Collapse'}
+            >
+              {sidebarCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
+            </button>
+          )}
         </div>
       </aside>
 
@@ -145,7 +161,7 @@ function App() {
             <button
               type="button"
               className="topbar-hamburger"
-              onClick={() => setMobileNavOpen(o => !o)}
+              onClick={toggleMobileNav}
               title="Menu"
             >
               <FiMenu />

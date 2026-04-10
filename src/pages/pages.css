@@ -8037,3 +8037,8 @@ button.sr-card {
     padding: 8px 6px;
   }
 }
+
+/* ── Fix: first summary KPI icon missing background ── */
+.summary-card-icon {
+  background: #2563eb;
+}

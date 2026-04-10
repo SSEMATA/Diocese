@@ -11,12 +11,10 @@
   gap: 2px;
   background: var(--color-sidebar-bg);
   color: var(--color-sidebar-text);
-  overflow-y: auto;
-  overflow-x: hidden;
   box-shadow: 4px 0 24px var(--color-shadow-lg);
   border-right: 1px solid var(--color-sidebar-border);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   z-index: 30;
   transition: width 0.25s ease, padding 0.25s ease;
 }
@@ -271,8 +269,8 @@
   position: fixed;
   inset: 0;
   background: rgba(10, 15, 30, 0.55);
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   z-index: 29;
 }
 
