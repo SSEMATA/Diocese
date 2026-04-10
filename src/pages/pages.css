@@ -2000,6 +2000,167 @@ tbody tr:hover {
   font-size: 0.85rem;
 }
 
+.notification-bell-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-medium);
+  color: var(--color-primary);
+}
+
+.notification-bell-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.notification-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 1500;
+}
+
+.notification-modal {
+  position: fixed;
+  top: 70px;
+  right: 24px;
+  width: min(380px, calc(100% - 32px));
+  max-height: calc(100vh - 96px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-medium);
+  border-radius: 22px;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.18);
+  z-index: 1550;
+}
+
+.notification-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--color-border-medium);
+}
+
+.notification-modal-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.notification-modal-header p {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.modal-close-btn {
+  border: none;
+  background: transparent;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.modal-close-btn:hover {
+  background: var(--color-bg-secondary);
+}
+
+.notification-page.notification-page-compact {
+  padding: 0 18px 18px;
+}
+
+.notification-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.notification-card {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--color-border-medium);
+  background: var(--color-bg-secondary);
+  border-radius: 18px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notification-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.notification-card.selected {
+  border-color: var(--color-primary);
+  background: rgba(59, 130, 246, 0.08);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.08);
+}
+
+.notification-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.notification-card-body {
+  display: grid;
+  gap: 4px;
+}
+
+.notification-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.notification-card-subtitle {
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+}
+
+.notification-card-time {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
 .icon-btn:hover,
 .user-pill:hover {
   background: var(--color-border-medium);
@@ -7459,6 +7620,7 @@ button.sr-card {
   padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .page-header {
@@ -7547,6 +7709,7 @@ button.sr-card {
   border: 1px solid var(--surface-card-border);
   border-radius: 16px;
   padding: 32px;
+  overflow: hidden;
 }
 
 .settings-section h2 {
@@ -7576,6 +7739,8 @@ button.sr-card {
 
 .form-group input,
 .form-group select {
+  width: 100%;
+  box-sizing: border-box;
   padding: 12px 16px;
   border: 1px solid var(--surface-card-border);
   border-radius: 8px;
@@ -7605,6 +7770,7 @@ button.sr-card {
 }
 
 .input-with-icon input {
+  width: 100%;
   padding-left: 40px;
 }
 
@@ -8041,4 +8207,427 @@ button.sr-card {
 /* ── Fix: first summary KPI icon missing background ── */
 .summary-card-icon {
   background: #2563eb;
+}
+
+/* ── Topbar mobile fix — all items in one row, no overflow ── */
+@media (max-width: 768px) {
+  .dashboard-topbar {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    overflow: hidden;
+  }
+
+  /* Hide the empty spacer */
+  .topbar-left { display: none !important; }
+
+  /* Search shrinks to fill available space */
+  .topbar-center {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none !important;
+    width: auto !important;
+  }
+
+  /* Search input wrap — compact */
+  .gs-input-wrap {
+    padding: 7px 10px;
+    gap: 6px;
+  }
+
+  .gs-input {
+    font-size: 0.8rem;
+    min-width: 0;
+  }
+
+  /* Hide search button text on mobile — icon only */
+  .gs-search-btn {
+    padding: 5px 8px;
+    font-size: 0;        /* hide text */
+    gap: 0;
+    min-width: 30px;
+    justify-content: center;
+  }
+
+  .gs-search-btn svg {
+    font-size: 0.85rem;  /* keep icon visible */
+  }
+
+  /* Actions — no shrink, tight gap */
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  /* Smaller icon buttons */
+  .icon-btn,
+  .user-pill {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .user-pill span { display: none; }
+
+  /* Hamburger same size */
+  .topbar-hamburger {
+    width: 34px !important;
+    height: 34px !important;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .dashboard-topbar { gap: 5px; padding: 8px 10px; }
+
+  .gs-input-wrap { padding: 6px 8px; }
+
+  /* Hide notification bell on very small — keep user + hamburger */
+  .icon-btn { display: none; }
+}
+
+/* ══════════════════════════════════════════
+   Global overflow fix — small devices
+══════════════════════════════════════════ */
+
+/* Prevent the whole page from scrolling horizontally */
+html, body, #root {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+@media (max-width: 768px) {
+
+  /* ── Root app shell ── */
+  .dashboard-app {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .dashboard-content {
+    overflow-x: hidden;
+    min-width: 0;
+  }
+
+  .app-main {
+    overflow-x: hidden;
+    min-width: 0;
+  }
+
+  /* ── Inventory table — scroll inside wrapper, don't push page ── */
+  .inv-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  .inv-table {
+    min-width: 600px !important;
+  }
+
+  /* ── Report table — same treatment ── */
+  .rp-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  .rp-table {
+    min-width: 560px !important;
+  }
+
+  /* ── Inventory filter bar ── */
+  .inv-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .inv-filters {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .inv-filters select {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+  }
+
+  /* ── Charts — prevent overflow ── */
+  .charts-section,
+  .chart-container,
+  .chart-combined {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── District bar rows ── */
+  .district-hbar-row {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Add Land form ── */
+  .alp-page {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .alp-form-body {
+    overflow-x: hidden;
+  }
+
+  /* ── Parcel detail grid ── */
+  .pd-grid,
+  .sd-grid,
+  .gs-detail-grid {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Report KPI strip ── */
+  .rp-kpis {
+    max-width: 100%;
+  }
+
+  /* ── Inventory modal ── */
+  .ipm-modal {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .ipm-grid {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Search results ── */
+  .sr-page,
+  .sd-page {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ── General: any flex/grid container ── */
+  .dashboard-page > * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* ── Land Records intro card — theme-aware ── */
+.inv-header {
+  background: var(--surface-card-bg) !important;
+  border: 1px solid var(--surface-card-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.inv-header .eyebrow {
+  color: var(--color-primary) !important;
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent) !important;
+  border-color: color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+}
+
+.inv-title {
+  color: var(--color-text-primary) !important;
+}
+
+.inv-subtitle {
+  color: var(--color-text-muted) !important;
+}
+
+/* ══════════════════════════════════════════
+   Add Land Page — full theme compliance
+══════════════════════════════════════════ */
+
+/* Page wrapper */
+.alp-page {
+  background: var(--color-bg, var(--color-bg-secondary)) !important;
+  box-shadow: 0 28px 75px var(--color-shadow-lg) !important;
+}
+
+/* Top nav */
+.alp-topnav {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.alp-topnav-icon {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--surface-card-bg)) !important;
+  box-shadow: none !important;
+}
+
+/* Progress track */
+.alp-track {
+  background: var(--color-border, var(--surface-card-border)) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+/* Step circles */
+.alp-steps-bar-circle {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-text-muted) !important;
+}
+
+.alp-steps-bar-step:hover {
+  background: var(--surface-card-alt-bg) !important;
+}
+
+/* Form card */
+.alp-form {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.alp-form-header {
+  background: var(--surface-card-alt-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.alp-form-body {
+  background: var(--surface-card-bg) !important;
+}
+
+/* Inputs & selects */
+.alp-input {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-text-primary, var(--color-text-heading)) !important;
+}
+
+.alp-input:hover {
+  border-color: var(--surface-card-hover-border) !important;
+}
+
+.alp-input:focus {
+  border-color: var(--color-primary) !important;
+  background: var(--surface-card-bg) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent) !important;
+}
+
+.alp-input::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+/* Labels */
+.alp-label {
+  color: var(--color-text-primary, var(--color-text-body)) !important;
+}
+
+.alp-hint {
+  color: var(--color-text-muted) !important;
+}
+
+/* Review step */
+.alp-review-notice {
+  background: color-mix(in srgb, var(--color-primary) 10%, var(--surface-card-bg)) !important;
+  border-color: color-mix(in srgb, var(--color-primary) 25%, transparent) !important;
+  color: var(--color-primary) !important;
+}
+
+.alp-review-group {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.alp-review-group-title {
+  background: var(--surface-card-alt-bg) !important;
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-text-muted) !important;
+}
+
+.alp-review-row {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.alp-review-label {
+  color: var(--color-text-muted) !important;
+}
+
+.alp-review-value {
+  color: var(--color-text-primary, var(--color-text-heading)) !important;
+}
+
+/* Footer */
+.alp-footer {
+  background: var(--surface-card-alt-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.alp-footer-hint {
+  color: var(--color-text-muted) !important;
+}
+
+/* Cancel button */
+.alp-topnav-cancel {
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-text-muted) !important;
+}
+
+/* Ghost button */
+.alp-btn-ghost {
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-text-muted) !important;
+}
+
+.alp-btn-ghost:hover {
+  background: var(--surface-card-alt-bg) !important;
+  color: var(--color-text-primary, var(--color-text-heading)) !important;
+}
+
+/* Success screen */
+.alp-success {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.alp-success-ring {
+  background: color-mix(in srgb, #16a34a 12%, var(--surface-card-bg)) !important;
+  border-color: color-mix(in srgb, #16a34a 35%, transparent) !important;
+}
+
+.alp-success-text h2 {
+  color: var(--color-text-primary, var(--color-text-heading)) !important;
+}
+
+.alp-success-text p {
+  color: var(--color-text-muted) !important;
+}
+
+.alp-success-meta {
+  background: var(--surface-card-border) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.alp-success-meta-item {
+  background: var(--surface-card-alt-bg) !important;
+}
+
+.alp-success-meta-label {
+  color: var(--color-text-muted) !important;
+}
+
+.alp-success-meta-value {
+  color: var(--color-text-primary, var(--color-text-heading)) !important;
+}
+
+/* Step badge */
+.alp-form-step-badge {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--surface-card-bg)) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Form title & desc */
+.alp-form-title {
+  color: var(--color-text-primary, var(--color-text-heading)) !important;
+}
+
+.alp-form-desc {
+  color: var(--color-text-muted) !important;
 }

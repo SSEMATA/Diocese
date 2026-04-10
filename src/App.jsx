@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   FiBell, FiUser, FiHome, FiLayers, FiFileText,
   FiMapPin, FiBarChart2, FiChevronLeft, FiChevronRight,
-  FiMenu, FiX,
+  FiMenu, FiX, FiClock, FiShield,
 } from 'react-icons/fi'
 import './App.css'
 import './pages/pages.css'
@@ -20,6 +20,8 @@ import SearchResultsPage from './pages/SearchResultsPage.jsx'
 import SearchDetailPage from './pages/SearchDetailPage.jsx'
 import AccountPage from './pages/AccountPage.jsx'
 import SettingsPage from './pages/SettingsPage.jsx'
+import NotificationPage from './pages/NotificationPage.jsx'
+import NotificationDetailPage from './pages/NotificationDetailPage.jsx'
 
 function App() {
   const [activePage, setActivePage]             = useState('Dashboard')
@@ -28,17 +30,48 @@ function App() {
   const [mobileNavOpen, setMobileNavOpen]       = useState(false)
   const [searchQuery, setSearchQuery]           = useState('')
   const [searchResult, setSearchResult]         = useState(null)
+  const [notifications] = useState([
+    {
+      id: 'notif-1',
+      title: 'New Parish Land Added',
+      subtitle: 'Kabarole parish now has a new registered parcel',
+      message: 'A new parcel was successfully registered under Kabarole parish. Review the details and assign a status for survey.',
+      time: '5 minutes ago',
+      color: '#2563eb',
+      icon: <FiBell />,
+    },
+    {
+      id: 'notif-2',
+      title: 'Pending Survey Reminder',
+      subtitle: 'Survey needed for Treasury land in Kamwenge',
+      message: 'The Kamwenge treasury parcel requires a survey appointment before it can be approved. Please assign a surveyor.',
+      time: '12 minutes ago',
+      color: '#f59e0b',
+      icon: <FiClock />,
+    },
+    {
+      id: 'notif-3',
+      title: 'User Access Request',
+      subtitle: 'Volunteer account request pending approval',
+      message: 'A volunteer has requested access to the system. Review their role and permissions before granting access.',
+      time: '30 minutes ago',
+      color: '#16a34a',
+      icon: <FiShield />,
+    },
+  ])
+  const [activeNotification, setActiveNotification] = useState(null)
+  const [isNotificationsModalOpen, setNotificationsModalOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('currentUser')
     return saved ? JSON.parse(saved) : null
   })
 
   useEffect(() => {
-    document.body.style.overflow = mobileNavOpen ? 'hidden' : ''
+    document.body.style.overflow = mobileNavOpen || isNotificationsModalOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [mobileNavOpen])
+  }, [mobileNavOpen, isNotificationsModalOpen])
   const { parcels, updateParcel } = useParcels()
 
   const handleSearch = (q) => { setSearchQuery(q); setSearchResult(null) }
@@ -155,7 +188,17 @@ function App() {
           </div>
 
           <div className="topbar-actions">
-            <button type="button" className="icon-btn"><FiBell /></button>
+            <button
+              type="button"
+              className="icon-btn notification-bell-btn"
+              onClick={() => setNotificationsModalOpen(true)}
+              title="View notifications"
+            >
+              <FiBell />
+              {notifications.length > 0 && (
+                <span className="notification-badge">{notifications.length}</span>
+              )}
+            </button>
             <button type="button" className="user-pill" onClick={() => setActivePage('Account')}><FiUser /></button>
             {/* Hamburger — mobile only, right side */}
             <button
@@ -167,6 +210,37 @@ function App() {
               <FiMenu />
             </button>
           </div>
+          {isNotificationsModalOpen && (
+            <>
+              <div className="notification-modal-backdrop" onClick={() => setNotificationsModalOpen(false)} />
+              <div className="notification-modal">
+                <div className="notification-modal-header">
+                  <div>
+                    <h3>Notifications</h3>
+                    <p>Recent alerts for your Diocese.</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="modal-close-btn"
+                    onClick={() => setNotificationsModalOpen(false)}
+                    aria-label="Close notifications"
+                  >
+                    <FiX />
+                  </button>
+                </div>
+                <NotificationPage
+                  notifications={notifications}
+                  selectedNotification={activeNotification}
+                  compact
+                  onOpenNotification={(notification) => {
+                    setActiveNotification(notification)
+                    setNotificationsModalOpen(false)
+                    setActivePage('NotificationDetail')
+                  }}
+                />
+              </div>
+            </>
+          )}
         </header>
 
         <main className="app-main">
@@ -205,6 +279,7 @@ function App() {
               selectedParcelId={selectedParcelId}
               onSelectParcel={setSelectedParcelId}
               onUpdateParcel={updateParcel}
+              onNavigateToPage={setActivePage}
             />
           )}
           {!searchQuery && activePage === 'AddLand' && (
@@ -218,6 +293,22 @@ function App() {
           )}
           {!searchQuery && activePage === 'Hierarchy' && (
             <HierarchyPage hierarchy={landData.hierarchy} />
+          )}
+          {!searchQuery && activePage === 'Notifications' && (
+            <NotificationPage
+              notifications={notifications}
+              selectedNotification={activeNotification}
+              onOpenNotification={(notification) => {
+                setActiveNotification(notification)
+                setActivePage('NotificationDetail')
+              }}
+            />
+          )}
+          {!searchQuery && activePage === 'NotificationDetail' && (
+            <NotificationDetailPage
+              notification={activeNotification}
+              onBack={() => setActivePage('Notifications')}
+            />
           )}
           {!searchQuery && activePage === 'Reports' && (
             <ReportPage

@@ -22,7 +22,7 @@ const CATEGORY_CONFIG = {
   'Commission / Institution':{ bg: '#f0fdf4', color: '#16a34a' },
 }
 
-function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, onSelectParcel, onUpdateParcel }) {
+function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, onSelectParcel, onUpdateParcel, onNavigateToPage }) {
   const [parishFilter, setParishFilter]     = useState('All')
   const [districtFilter, setDistrictFilter] = useState('All')
   const [categoryFilter, setCategoryFilter] = useState('All')
@@ -157,7 +157,7 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
           <h1 className="inv-title">Land Records</h1>
           <p className="inv-subtitle">Browse, filter and manage all diocesan land parcels across 8 districts.</p>
         </div>
-        <button type="button" className="inv-add-btn">
+        <button type="button" className="inv-add-btn" onClick={() => onNavigateToPage?.('AddLand')}>
           <FiPlus /> Add Land Record
         </button>
       </div>
