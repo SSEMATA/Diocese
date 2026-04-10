@@ -26,5 +26,13 @@ export function useParcels() {
     })
   }, [])
 
-  return { parcels, updateParcel }
+  const addParcel = useCallback((parcel) => {
+    setParcels(prev => {
+      const next = [...prev, parcel]
+      save(next)
+      return next
+    })
+  }, [])
+
+  return { parcels, updateParcel, addParcel }
 }

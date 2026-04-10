@@ -1,40 +1,33 @@
-const DISTRICT_COORDS = {
-  Kabarole:    [0.6527,  30.2506],
-  Bundibugyo:  [0.7167,  30.0667],
-  Kamwenge:    [0.1833,  30.4667],
-  Kyenjojo:    [0.6167,  30.6333],
-  Kyegegwa:    [0.4833,  31.0500],
-  Ntoroko:     [1.0500,  30.4167],
-  Bunyangabu:  [0.4167,  30.2000],
-  Kitagwenda:  [0.2500,  30.3500],
-}
-
-const DEFAULT_COORDS = [0.6527, 30.2506]
-
-function getGoogleMapUrl(lat, lng, zoom = 13) {
-  return `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`
-}
-
-function formatLatLng(lat, lng) {
-  const latDir = lat >= 0 ? 'N' : 'S'
-  const lngDir = lng >= 0 ? 'E' : 'W'
-  return `${Math.abs(lat).toFixed(4)}°${latDir}, ${Math.abs(lng).toFixed(4)}°${lngDir}`
+function buildQuery(parcel) {
+  // Build the most specific query possible from available location fields
+  const parts = [
+    parcel.name,
+    parcel.village,
+    parcel.subcounty,
+    parcel.county,
+    parcel.district,
+    'Uganda',
+  ].filter(Boolean)
+  return parts.join(', ')
 }
 
 function ParcelMap({ parcel }) {
-  const coords = DISTRICT_COORDS[parcel.district] || DEFAULT_COORDS
+  const query = buildQuery(parcel)
+  const src = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=14&output=embed`
 
   return (
     <div className="parcel-map-wrap">
       <iframe
+        key={parcel.id}
         title={`Map of ${parcel.name || parcel.district}`}
         className="parcel-map"
-        src={getGoogleMapUrl(coords[0], coords[1], 13)}
+        src={src}
         loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
       />
       <div className="parcel-map-caption">
-        <div><strong>{parcel.name || parcel.district}</strong></div>
-        <div>{formatLatLng(coords[0], coords[1])}</div>
+        <strong>{parcel.name || parcel.district}</strong>
+        <div>{[parcel.village, parcel.subcounty, parcel.district].filter(Boolean).join(' · ')}</div>
       </div>
     </div>
   )

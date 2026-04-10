@@ -32,7 +32,7 @@ function Field({ label, required, hint, children }) {
   )
 }
 
-function AddLandPage({ categories, statuses, tenureTypes, districts, onCancel }) {
+function AddLandPage({ categories, statuses, tenureTypes, districts, onSave, onCancel }) {
   const [step, setStep]           = useState(1)
   const [form, setForm]           = useState(EMPTY)
   const [submitted, setSubmitted] = useState(false)
@@ -120,7 +120,16 @@ function AddLandPage({ categories, statuses, tenureTypes, districts, onCancel })
       </div>
 
       {/* ── Form card ── */}
-      <form className="alp-form" onSubmit={(e) => { e.preventDefault(); setSubmitted(true) }}>
+      <form className="alp-form" onSubmit={(e) => {
+          e.preventDefault()
+          const newParcel = {
+            ...form,
+            id: 'P' + Date.now(),
+            acreage: parseFloat(form.acreage) || 0,
+          }
+          onSave(newParcel)
+          setSubmitted(true)
+        }}>
 
         <div className="alp-form-header">
           <div className="alp-form-step-badge">Step {step} of {STEPS.length}</div>

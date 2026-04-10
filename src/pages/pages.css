@@ -5203,8 +5203,7 @@ tbody tr:hover {
   .ipm-map-card { grid-column: span 1; }
   .ipm-hero { flex-direction: column; gap: 14px; }
   .ipm-hero-kpi { width: 100%; flex-direction: row; justify-content: center; gap: 6px; }
-  .ipm-hero-actions { width: 100%; }
-  .ipm-edit-btn { flex: 1; justify-content: center; }
+  .ipm-edit-btn { flex: 0 0 30px !important; width: 30px !important; max-width: 30px !important; height: 30px !important; }
   .ipm-hero-title { font-size: 1.2rem; }
 }
 
@@ -9391,8 +9390,7 @@ html, body, #root {
   .ipm-hero { padding: 18px; gap: 12px; }
   .ipm-hero-title { font-size: 1.1rem; }
   .ipm-hero-kpi { flex-direction: row; gap: 6px; padding: 10px 16px; }
-  .ipm-hero-actions { width: 100%; }
-  .ipm-edit-btn { flex: 1; justify-content: center; }
+  .ipm-edit-btn { flex: 0 0 30px !important; width: 30px !important; max-width: 30px !important; height: 30px !important; }
 
   .ipm-grid { grid-template-columns: 1fr; }
   .ipm-map-card { grid-column: span 1; }
@@ -9409,8 +9407,7 @@ html, body, #root {
 }
 
 /* ── Inventory page — theme-aware stat icons ── */
-.
-inv-stat-icon-blue   { background: var(--color-blue-bg)   !important; color: var(--color-blue)   !important; }
+.inv-stat-icon-blue   { background: var(--color-blue-bg)   !important; color: var(--color-blue)   !important; }
 .inv-stat-icon-green  { background: var(--color-green-bg)  !important; color: var(--color-success) !important; }
 .inv-stat-icon-orange { background: var(--color-warning-bg)!important; color: var(--color-warning) !important; }
 .inv-stat-icon-purple { background: var(--color-purple-bg) !important; color: var(--color-purple)  !important; }
@@ -9764,3 +9761,54 @@ inv-stat-icon-blue   { background: var(--color-blue-bg)   !important; color: var
 }
 
 .ipm-close-btn:hover svg { color: #dc2626 !important; }
+
+/* ── Inventory table row edit button ── */
+.inv-row-edit-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--color-border-medium);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.78rem;
+}
+
+.inv-row-edit-btn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ── Modal bottom edit button ── */
+.ipm-footer-actions {
+  padding: 14px 0 4px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ipm-edit-full-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: none;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--color-shadow-primary-lg);
+  transition: all 0.2s;
+}
+
+.ipm-edit-full-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.ipm-view-wrap { display: flex; flex-direction: column; gap: 0; }

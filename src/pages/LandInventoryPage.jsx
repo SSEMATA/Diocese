@@ -132,7 +132,7 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
 
   const filteredParcels = useMemo(() => {
     const q = searchText.trim().toLowerCase()
-    return parcels.filter((p) => {
+    return [...parcels].reverse().filter((p) => {
       return (
         (parishFilter   === 'All' || p.parish    === parishFilter)   &&
         (districtFilter === 'All' || p.district  === districtFilter) &&
@@ -284,7 +284,16 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
                       {parcel.status}
                     </span>
                   </td>
-                  <td><FiChevronRight className="inv-row-arrow" /></td>
+                  <td>
+                    <button
+                      type="button"
+                      className="inv-row-edit-btn"
+                      title="Edit"
+                      onClick={(e) => { e.stopPropagation(); setActiveParcel(parcel); onSelectParcel(parcel.id); openEdit(parcel) }}
+                    >
+                      <FiEdit2 />
+                    </button>
+                  </td>
                 </tr>
               )
             })}
@@ -322,17 +331,12 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
                   <FiXCircle />
                 </button>
               </div>
-              {/* Row 2: KPI far left, edit far right */}
+              {/* Row 2: KPI only */}
               <div className="ipm-hero-row2">
                 <div className="ipm-hero-kpi">
                   <span className="ipm-kpi-num">{activeParcel.acreage}</span>
                   <span className="ipm-kpi-unit">ac</span>
                 </div>
-                {!editing && (
-                  <button type="button" className="ipm-edit-btn" onClick={() => openEdit(activeParcel)} title="Edit">
-                    <FiEdit2 />
-                  </button>
-                )}
               </div>
             </div>
 
@@ -437,6 +441,7 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
                 </div>
               ) : (
                 /* ── View grid ── */
+                <div className="ipm-view-wrap">
                 <div className="ipm-grid">
                   <div className="ipm-card">
                     <div className="ipm-card-head ipm-head-blue"><FiHash /> Property</div>
@@ -500,6 +505,12 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
                     <div className="ipm-card-head ipm-head-cyan"><FiMapPin /> Location Map — {activeParcel.district}</div>
                     <ParcelMap parcel={activeParcel} />
                   </div>
+                </div>
+                <div className="ipm-footer-actions">
+                  <button type="button" className="ipm-edit-full-btn" onClick={() => openEdit(activeParcel)}>
+                    <FiEdit2 /> Edit Record
+                  </button>
+                </div>
                 </div>
               )}
             </div>

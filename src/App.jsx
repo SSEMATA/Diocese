@@ -126,7 +126,7 @@ function App() {
       document.body.style.overflow = ''
     }
   }, [mobileNavOpen, isNotificationsModalOpen])
-  const { parcels, updateParcel } = useParcels()
+  const { parcels, updateParcel, addParcel } = useParcels()
 
   const handleSearch = (q) => { setSearchQuery(q); setSearchResult(null) }
   const handleClearSearch = () => { setSearchQuery(''); setSearchResult(null) }
@@ -345,6 +345,7 @@ function App() {
               statuses={landData.statuses}
               tenureTypes={landData.tenureTypes}
               districts={landData.districts}
+              onSave={(parcel) => { addParcel(parcel) }}
               onCancel={() => setActivePage('Inventory')}
             />
           )}
