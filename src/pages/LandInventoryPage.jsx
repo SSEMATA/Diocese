@@ -11,15 +11,15 @@ import * as XLSX from 'xlsx'
 import ParcelMap from '../components/maps/ParcelMap.jsx'
 
 const STATUS_CONFIG = {
-  Active:   { bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0' },
-  Inactive: { bg: '#fef2f2', color: '#dc2626', border: '#fecaca' },
-  Reserved: { bg: '#fff7ed', color: '#ea580c', border: '#fed7aa' },
+  Active:   { bg: 'var(--color-success-bg)',  color: 'var(--color-success)',  border: 'var(--color-success-border)' },
+  Inactive: { bg: 'var(--color-danger-bg)',   color: 'var(--color-danger)',   border: 'var(--color-danger-border)' },
+  Reserved: { bg: 'var(--color-warning-bg)',  color: 'var(--color-warning)',  border: 'var(--color-warning-border)' },
 }
 
 const CATEGORY_CONFIG = {
-  'Parish land':             { bg: '#eff6ff', color: '#2563eb' },
-  'Treasury land':           { bg: '#faf5ff', color: '#7c3aed' },
-  'Commission / Institution':{ bg: '#f0fdf4', color: '#16a34a' },
+  'Parish land':              { bg: 'var(--color-blue-bg)',   color: 'var(--color-blue)' },
+  'Treasury land':            { bg: 'var(--color-purple-bg)', color: 'var(--color-purple)' },
+  'Commission / Institution': { bg: 'var(--color-green-bg)',  color: 'var(--color-green)' },
 }
 
 function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, onSelectParcel, onUpdateParcel, onNavigateToPage }) {
@@ -165,28 +165,28 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
       {/* ── Stat pills ── */}
       <div className="inv-stats">
         <div className="inv-stat">
-          <div className="inv-stat-icon" style={{ background: '#eff6ff', color: '#2563eb' }}><FiLayers /></div>
+          <div className="inv-stat-icon inv-stat-icon-blue"><FiLayers /></div>
           <div>
             <span className="inv-stat-num">{filteredParcels.length}</span>
             <span className="inv-stat-label">Total Parcels</span>
           </div>
         </div>
         <div className="inv-stat">
-          <div className="inv-stat-icon" style={{ background: '#f0fdf4', color: '#16a34a' }}><FiCheckCircle /></div>
+          <div className="inv-stat-icon inv-stat-icon-green"><FiCheckCircle /></div>
           <div>
             <span className="inv-stat-num">{activeCount}</span>
             <span className="inv-stat-label">Active</span>
           </div>
         </div>
         <div className="inv-stat">
-          <div className="inv-stat-icon" style={{ background: '#fff7ed', color: '#ea580c' }}><FiClock /></div>
+          <div className="inv-stat-icon inv-stat-icon-orange"><FiClock /></div>
           <div>
             <span className="inv-stat-num">{reservedCount}</span>
             <span className="inv-stat-label">Reserved</span>
           </div>
         </div>
         <div className="inv-stat">
-          <div className="inv-stat-icon" style={{ background: '#faf5ff', color: '#7c3aed' }}><FiMapPin /></div>
+          <div className="inv-stat-icon inv-stat-icon-purple"><FiMapPin /></div>
           <div>
             <span className="inv-stat-num">{totalAcreage.toFixed(1)}</span>
             <span className="inv-stat-label">Total Acres</span>
@@ -303,6 +303,9 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
 
             {/* ── Hero header ── */}
             <div className="ipm-hero" style={{ '--status-color': STATUS_CONFIG[activeParcel.status]?.color || '#2563eb', '--status-bg': STATUS_CONFIG[activeParcel.status]?.bg || '#eff6ff' }}>
+              <button type="button" className="ipm-close-btn ipm-close-corner" onClick={closeModal}>
+                <FiXCircle />
+              </button>
               <div className="ipm-hero-left">
                 <div className="ipm-hero-badges">
                   <span className="ipm-status-badge" style={{ background: STATUS_CONFIG[activeParcel.status]?.bg, color: STATUS_CONFIG[activeParcel.status]?.color, border: `1px solid ${STATUS_CONFIG[activeParcel.status]?.border}` }}>
@@ -319,19 +322,16 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
                   {[activeParcel.village, activeParcel.parish, activeParcel.district].filter(Boolean).join(' · ')}
                 </p>
               </div>
-              <div className="ipm-hero-kpi">
-                <span className="ipm-kpi-num">{activeParcel.acreage}</span>
-                <span className="ipm-kpi-unit">acres</span>
-              </div>
-              <div className="ipm-hero-actions">
+              <div className="ipm-hero-right">
+                <div className="ipm-hero-kpi">
+                  <span className="ipm-kpi-num">{activeParcel.acreage}</span>
+                  <span className="ipm-kpi-unit">ac</span>
+                </div>
                 {!editing && (
                   <button type="button" className="ipm-edit-btn" onClick={() => openEdit(activeParcel)}>
-                    <FiEdit2 /> Edit Record
+                    <FiEdit2 />
                   </button>
                 )}
-                <button type="button" className="ipm-close-btn" onClick={closeModal}>
-                  <FiXCircle />
-                </button>
               </div>
             </div>
 
