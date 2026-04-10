@@ -8694,3 +8694,154 @@ html, body, #root {
 .alp-form-desc {
   color: var(--color-text-muted) !important;
 }
+
+/* ══════════════════════════════════════════
+   Settings Page — full theme compliance
+══════════════════════════════════════════ */
+
+/* Page wrapper */
+.settings-page {
+  background: transparent;
+}
+
+/* Header */
+.page-header-icon {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-primary) !important;
+}
+
+.page-header h1 {
+  color: var(--color-text-primary) !important;
+}
+
+.page-header p {
+  color: var(--color-text-muted) !important;
+}
+
+/* Tabs */
+.settings-tab {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.settings-tab:hover {
+  background: var(--surface-card-alt-bg) !important;
+  border-color: var(--surface-card-hover-border) !important;
+}
+
+.settings-tab.active {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: white !important;
+}
+
+/* Panel */
+.settings-panel {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+/* Section headings */
+.settings-section h2,
+.section-header h3,
+.password-policy-section h3,
+.role-permissions h5 {
+  color: var(--color-text-primary) !important;
+}
+
+/* Form labels */
+.form-group label,
+.policy-settings label {
+  color: var(--color-text-primary) !important;
+}
+
+/* Inputs & selects */
+.form-group input,
+.form-group select {
+  background: var(--color-bg-primary) !important;
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent) !important;
+  outline: none;
+}
+
+.form-group input::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+/* Input with icon */
+.input-with-icon svg {
+  color: var(--color-text-muted) !important;
+}
+
+/* Role cards */
+.roles-grid .role-card {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+}
+
+.roles-grid .role-card:hover {
+  border-color: var(--surface-card-hover-border) !important;
+  box-shadow: 0 4px 16px var(--color-shadow-md) !important;
+}
+
+.role-header h4 {
+  color: var(--color-text-primary) !important;
+}
+
+.role-users {
+  color: var(--color-text-muted) !important;
+}
+
+.role-icon {
+  background: var(--color-primary) !important;
+}
+
+/* Permission badges */
+.permission-badge {
+  background: color-mix(in srgb, var(--color-primary) 15%, var(--surface-card-bg)) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--color-primary) !important;
+  color: white !important;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark) !important;
+}
+
+.btn-secondary {
+  background: var(--surface-card-bg) !important;
+  border-color: var(--surface-card-border) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.btn-secondary:hover {
+  background: var(--surface-card-alt-bg) !important;
+  border-color: var(--surface-card-hover-border) !important;
+}
+
+/* Role actions divider */
+.role-actions {
+  border-color: var(--surface-card-border) !important;
+}
+
+/* Password policy checkboxes */
+.policy-settings input[type="checkbox"] {
+  accent-color: var(--color-primary);
+}
+
+/* Section header */
+.section-header {
+  border-color: var(--surface-card-border);
+}

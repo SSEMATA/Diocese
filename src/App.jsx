@@ -23,48 +23,75 @@ import SettingsPage from './pages/SettingsPage.jsx'
 import NotificationPage from './pages/NotificationPage.jsx'
 import NotificationDetailPage from './pages/NotificationDetailPage.jsx'
 
+const notifications = [
+  {
+    id: 'notif-1',
+    title: 'New Parish Land Added',
+    subtitle: 'Kabarole parish now has a new registered parcel',
+    message: 'A new parcel was successfully registered under Kabarole parish. Review the details and assign a status for survey.',
+    time: '5 minutes ago',
+    color: '#2563eb',
+    icon: <FiBell />,
+  },
+  {
+    id: 'notif-2',
+    title: 'Pending Survey Reminder',
+    subtitle: 'Survey needed for Treasury land in Kamwenge',
+    message: 'The Kamwenge treasury parcel requires a survey appointment before it can be approved. Please assign a surveyor.',
+    time: '12 minutes ago',
+    color: '#f59e0b',
+    icon: <FiClock />,
+  },
+  {
+    id: 'notif-3',
+    title: 'User Access Request',
+    subtitle: 'Volunteer account request pending approval',
+    message: 'A volunteer has requested access to the system. Review their role and permissions before granting access.',
+    time: '30 minutes ago',
+    color: '#16a34a',
+    icon: <FiShield />,
+  },
+]
+
 function App() {
-  const [activePage, setActivePage]             = useState('Dashboard')
   const [selectedParcelId, setSelectedParcelId] = useState(null)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileNavOpen, setMobileNavOpen]       = useState(false)
   const [searchQuery, setSearchQuery]           = useState('')
   const [searchResult, setSearchResult]         = useState(null)
-  const [notifications] = useState([
-    {
-      id: 'notif-1',
-      title: 'New Parish Land Added',
-      subtitle: 'Kabarole parish now has a new registered parcel',
-      message: 'A new parcel was successfully registered under Kabarole parish. Review the details and assign a status for survey.',
-      time: '5 minutes ago',
-      color: '#2563eb',
-      icon: <FiBell />,
-    },
-    {
-      id: 'notif-2',
-      title: 'Pending Survey Reminder',
-      subtitle: 'Survey needed for Treasury land in Kamwenge',
-      message: 'The Kamwenge treasury parcel requires a survey appointment before it can be approved. Please assign a surveyor.',
-      time: '12 minutes ago',
-      color: '#f59e0b',
-      icon: <FiClock />,
-    },
-    {
-      id: 'notif-3',
-      title: 'User Access Request',
-      subtitle: 'Volunteer account request pending approval',
-      message: 'A volunteer has requested access to the system. Review their role and permissions before granting access.',
-      time: '30 minutes ago',
-      color: '#16a34a',
-      icon: <FiShield />,
-    },
-  ])
-  const [activeNotification, setActiveNotification] = useState(null)
+  const [activePage, setActivePage]             = useState(() => {
+    const savedPage = localStorage.getItem('activePage')
+    const validPages = ['Dashboard', 'Inventory', 'AddLand', 'Hierarchy', 'Reports', 'Settings', 'Notifications', 'NotificationDetail', 'Account']
+    const page = savedPage && validPages.includes(savedPage) ? savedPage : 'Dashboard'
+    if (page === 'NotificationDetail') {
+      const savedNotificationId = localStorage.getItem('activeNotificationId')
+      if (!savedNotificationId || !notifications.find((notification) => notification.id === savedNotificationId)) {
+        return 'Notifications'
+      }
+    }
+    return page
+  })
+  const [activeNotification, setActiveNotification] = useState(() => {
+    const savedNotificationId = localStorage.getItem('activeNotificationId')
+    return savedNotificationId ? notifications.find((notification) => notification.id === savedNotificationId) : null
+  })
   const [isNotificationsModalOpen, setNotificationsModalOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('currentUser')
     return saved ? JSON.parse(saved) : null
   })
+
+  useEffect(() => {
+    localStorage.setItem('activePage', activePage)
+  }, [activePage])
+
+  useEffect(() => {
+    if (activeNotification) {
+      localStorage.setItem('activeNotificationId', activeNotification.id)
+    } else {
+      localStorage.removeItem('activeNotificationId')
+    }
+  }, [activeNotification])
 
   useEffect(() => {
     document.body.style.overflow = mobileNavOpen || isNotificationsModalOpen ? 'hidden' : ''
@@ -138,18 +165,21 @@ function App() {
         </div>
 
         <nav className="sidebar-nav">
-          {navItems.map(({ label, page, icon: Icon }) => (
-            <button
-              key={page}
-              type="button"
-              className={`sidebar-link ${activePage === page ? 'active' : ''}`}
-              onClick={() => navigate(page)}
-              title={label}
-            >
-              <Icon className="sidebar-link-icon" />
-              {!sidebarCollapsed && <span>{label}</span>}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const Icon = item.icon
+            return (
+              <button
+                key={item.page}
+                type="button"
+                className={`sidebar-link ${activePage === item.page ? 'active' : ''}`}
+                onClick={() => navigate(item.page)}
+                title={item.label}
+              >
+                <Icon className="sidebar-link-icon" />
+                {!sidebarCollapsed && <span>{item.label}</span>}
+              </button>
+            )
+          })}
         </nav>
 
         <div className="sidebar-theme">
