@@ -44,7 +44,7 @@ function makePin(color) {
 
 function ParcelMap({ parcel }) {
   const coords = DISTRICT_COORDS[parcel.district] || [0.6527, 30.2506]
-  const pinColor = STATUS_COLORS[parcel.status] || '#2563eb'
+  const pinColor = STATUS_COLORS[parcel.status] || '#dc2626'
 
   return (
     <MapContainer
@@ -56,8 +56,8 @@ function ParcelMap({ parcel }) {
       className="parcel-map"
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://stadiamaps.com/">Stadia Maps</a>'
-        url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+        attribution='&copy; OpenStreetMap contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <ZoomControl position="bottomright" />
 
@@ -65,7 +65,7 @@ function ParcelMap({ parcel }) {
       <Circle
         center={coords}
         radius={3000}
-        pathOptions={{ color: pinColor, fillColor: pinColor, fillOpacity: 0.08, weight: 1.5, dashArray: '6 4' }}
+        pathOptions={{ color: pinColor, fillColor: pinColor, fillOpacity: 0.18, weight: 2.5, dashArray: '6 4' }}
       />
 
       <Marker position={coords} icon={makePin(pinColor)}>

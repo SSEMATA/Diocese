@@ -66,8 +66,8 @@ function DiocesanMap({ parcels }) {
         className="diocese-map"
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://stadiamaps.com/">Stadia Maps</a>'
-          url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+          attribution='&copy; OpenStreetMap contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <ZoomControl position="bottomright" />
 
@@ -75,7 +75,7 @@ function DiocesanMap({ parcels }) {
           <Marker
             key={district}
             position={coords}
-            icon={makeIcon(count > 0 ? '#2563eb' : '#94a3b8')}
+            icon={makeIcon(count > 0 ? '#dc2626' : '#64748b')}
           >
             <Popup className="diocese-popup">
               <div className="dp-header">
