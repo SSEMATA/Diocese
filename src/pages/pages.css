@@ -8281,6 +8281,21 @@ button.sr-card {
     gap: 8px;
     padding: 10px 12px;
     overflow: hidden;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    background: var(--color-bg-primary);
+  }
+
+  .dashboard-topbar.hidden {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+
+  .dashboard-topbar.visible {
+    transform: translateY(0);
+    opacity: 1;
   }
 
   /* Hide the empty spacer */

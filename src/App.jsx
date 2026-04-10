@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   FiBell, FiUser, FiHome, FiLayers, FiFileText,
   FiMapPin, FiBarChart2, FiChevronLeft, FiChevronRight,
@@ -76,10 +76,37 @@ function App() {
     return savedNotificationId ? notifications.find((notification) => notification.id === savedNotificationId) : null
   })
   const [isNotificationsModalOpen, setNotificationsModalOpen] = useState(false)
+  const [isTopbarVisible, setTopbarVisible] = useState(true)
+  const scrollRef = useRef(window?.scrollY ?? 0)
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('currentUser')
     return saved ? JSON.parse(saved) : null
   })
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth > 768) {
+        setTopbarVisible(true)
+        return
+      }
+
+      const currentScroll = window.scrollY
+      const lastScroll = scrollRef.current
+      const scrolledDown = currentScroll > lastScroll + 8
+      const scrolledUp = currentScroll < lastScroll - 8
+
+      if (scrolledDown) {
+        setTopbarVisible(true)
+      } else if (scrolledUp) {
+        setTopbarVisible(false)
+      }
+
+      scrollRef.current = Math.max(currentScroll, 0)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     localStorage.setItem('activePage', activePage)
@@ -210,7 +237,7 @@ function App() {
       {/* ── Main content ── */}
       <div className={`dashboard-content ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
 
-        <header className="dashboard-topbar">
+        <header className={`dashboard-topbar ${isTopbarVisible ? 'visible' : 'hidden'}`}>
           <div className="topbar-left" />
 
           <div className="topbar-center">
