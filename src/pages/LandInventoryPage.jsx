@@ -302,33 +302,34 @@ function LandInventoryPage({ parcels, categories, statuses, selectedParcelId, on
           <div className="ipm-modal" onClick={(e) => e.stopPropagation()}>
 
             {/* ── Hero header ── */}
-            <div className="ipm-hero" style={{ '--status-color': STATUS_CONFIG[activeParcel.status]?.color || '#2563eb', '--status-bg': STATUS_CONFIG[activeParcel.status]?.bg || '#eff6ff' }}>
-              <button type="button" className="ipm-close-btn ipm-close-corner" onClick={closeModal}>
-                <FiXCircle />
-              </button>
-              <div className="ipm-hero-left">
-                <div className="ipm-hero-badges">
-                  <span className="ipm-status-badge" style={{ background: STATUS_CONFIG[activeParcel.status]?.bg, color: STATUS_CONFIG[activeParcel.status]?.color, border: `1px solid ${STATUS_CONFIG[activeParcel.status]?.border}` }}>
-                    {activeParcel.status}
-                  </span>
-                  <span className="ipm-cat-badge" style={{ background: CATEGORY_CONFIG[activeParcel.category]?.bg, color: CATEGORY_CONFIG[activeParcel.category]?.color }}>
-                    {activeParcel.category}
-                  </span>
-                  {saved && <span className="ipm-saved-toast"><FiCheckCircle /> Saved</span>}
+            <div className="ipm-hero" style={{ '--status-color': STATUS_CONFIG[activeParcel.status]?.color || '#2563eb' }}>
+              {/* Row 1: badges + title + X */}
+              <div className="ipm-hero-row1">
+                <div className="ipm-hero-left">
+                  <div className="ipm-hero-badges">
+                    <span className="ipm-status-badge" style={{ background: STATUS_CONFIG[activeParcel.status]?.bg, color: STATUS_CONFIG[activeParcel.status]?.color, border: `1px solid ${STATUS_CONFIG[activeParcel.status]?.border}` }}>
+                      {activeParcel.status}
+                    </span>
+                    <span className="ipm-cat-badge" style={{ background: CATEGORY_CONFIG[activeParcel.category]?.bg, color: CATEGORY_CONFIG[activeParcel.category]?.color }}>
+                      {activeParcel.category}
+                    </span>
+                    {saved && <span className="ipm-saved-toast"><FiCheckCircle /> Saved</span>}
+                  </div>
+                  <h2 className="ipm-hero-title">{activeParcel.name}</h2>
+                  <p className="ipm-hero-sub"><FiMapPin /> {[activeParcel.village, activeParcel.parish, activeParcel.district].filter(Boolean).join(' · ')}</p>
                 </div>
-                <h2 className="ipm-hero-title">{activeParcel.name}</h2>
-                <p className="ipm-hero-sub">
-                  <FiMapPin />
-                  {[activeParcel.village, activeParcel.parish, activeParcel.district].filter(Boolean).join(' · ')}
-                </p>
+                <button type="button" className="ipm-close-btn" onClick={closeModal} title="Close">
+                  <FiXCircle />
+                </button>
               </div>
-              <div className="ipm-hero-right">
+              {/* Row 2: KPI far left, edit far right */}
+              <div className="ipm-hero-row2">
                 <div className="ipm-hero-kpi">
                   <span className="ipm-kpi-num">{activeParcel.acreage}</span>
                   <span className="ipm-kpi-unit">ac</span>
                 </div>
                 {!editing && (
-                  <button type="button" className="ipm-edit-btn" onClick={() => openEdit(activeParcel)}>
+                  <button type="button" className="ipm-edit-btn" onClick={() => openEdit(activeParcel)} title="Edit">
                     <FiEdit2 />
                   </button>
                 )}

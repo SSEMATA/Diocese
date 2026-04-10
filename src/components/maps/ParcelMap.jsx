@@ -1,14 +1,3 @@
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl, Circle } from 'react-leaflet'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-
-delete L.Icon.Default.prototype._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl:       'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl:     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-})
-
 const DISTRICT_COORDS = {
   Kabarole:    [0.6527,  30.2506],
   Bundibugyo:  [0.7167,  30.0667],
@@ -20,76 +9,34 @@ const DISTRICT_COORDS = {
   Kitagwenda:  [0.2500,  30.3500],
 }
 
-const STATUS_COLORS = {
-  Active:   '#059669',
-  Inactive: '#dc2626',
-  Reserved: '#d97706',
+const DEFAULT_COORDS = [0.6527, 30.2506]
+
+function getGoogleMapUrl(lat, lng, zoom = 13) {
+  return `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`
 }
 
-function makePin(color) {
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">
-      <path d="M16 0C7.163 0 0 7.163 0 16c0 10.667 16 26 16 26S32 26.667 32 16C32 7.163 24.837 0 16 0z"
-        fill="${color}" stroke="white" stroke-width="2.5"/>
-      <circle cx="16" cy="16" r="6" fill="white"/>
-    </svg>`
-  return L.divIcon({
-    html: svg,
-    className: '',
-    iconSize: [32, 42],
-    iconAnchor: [16, 42],
-    popupAnchor: [0, -44],
-  })
+function formatLatLng(lat, lng) {
+  const latDir = lat >= 0 ? 'N' : 'S'
+  const lngDir = lng >= 0 ? 'E' : 'W'
+  return `${Math.abs(lat).toFixed(4)}°${latDir}, ${Math.abs(lng).toFixed(4)}°${lngDir}`
 }
 
 function ParcelMap({ parcel }) {
-  const coords = DISTRICT_COORDS[parcel.district] || [0.6527, 30.2506]
-  const pinColor = STATUS_COLORS[parcel.status] || '#dc2626'
+  const coords = DISTRICT_COORDS[parcel.district] || DEFAULT_COORDS
 
   return (
-    <MapContainer
-      key={parcel.id}
-      center={coords}
-      zoom={11}
-      zoomControl={false}
-      scrollWheelZoom={false}
-      className="parcel-map"
-    >
-      <TileLayer
-        attribution='&copy; OpenStreetMap contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    <div className="parcel-map-wrap">
+      <iframe
+        title={`Map of ${parcel.name || parcel.district}`}
+        className="parcel-map"
+        src={getGoogleMapUrl(coords[0], coords[1], 13)}
+        loading="lazy"
       />
-      <ZoomControl position="bottomright" />
-
-      {/* Soft radius circle around the pin */}
-      <Circle
-        center={coords}
-        radius={3000}
-        pathOptions={{ color: pinColor, fillColor: pinColor, fillOpacity: 0.18, weight: 2.5, dashArray: '6 4' }}
-      />
-
-      <Marker position={coords} icon={makePin(pinColor)}>
-        <Popup className="parcel-popup">
-          <div className="pp-name">{parcel.name}</div>
-          <div className="pp-row">
-            <span className="pp-label">District</span>
-            <span className="pp-value">{parcel.district}</span>
-          </div>
-          <div className="pp-row">
-            <span className="pp-label">Village</span>
-            <span className="pp-value">{parcel.village || '—'}</span>
-          </div>
-          <div className="pp-row">
-            <span className="pp-label">Acreage</span>
-            <span className="pp-value">{parcel.acreage} ac</span>
-          </div>
-          <div className="pp-row">
-            <span className="pp-label">Status</span>
-            <span className="pp-status" style={{ color: pinColor }}>{parcel.status}</span>
-          </div>
-        </Popup>
-      </Marker>
-    </MapContainer>
+      <div className="parcel-map-caption">
+        <div><strong>{parcel.name || parcel.district}</strong></div>
+        <div>{formatLatLng(coords[0], coords[1])}</div>
+      </div>
+    </div>
   )
 }
 

@@ -1,14 +1,8 @@
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
+const DEFAULT_COORDS = [0.6527, 30.2506]
 
-// Fix default marker icons broken by bundlers
-delete L.Icon.Default.prototype._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl:       'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl:     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-})
+function getGoogleMapUrl(lat, lng, zoom = 8) {
+  return `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`
+}
 
 // Approximate coordinates for each diocese district
 const DISTRICT_COORDS = {
@@ -22,26 +16,10 @@ const DISTRICT_COORDS = {
   Kitagwenda:  [0.2500,  30.3500],
 }
 
-const CATEGORY_COLORS = {
-  'Parish land':              '#2563eb',
-  'Treasury land':            '#7c3aed',
-  'Commission / Institution': '#0891b2',
-}
-
-function makeIcon(color) {
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">
-      <path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z"
-        fill="${color}" stroke="white" stroke-width="2"/>
-      <circle cx="14" cy="14" r="5" fill="white"/>
-    </svg>`
-  return L.divIcon({
-    html: svg,
-    className: '',
-    iconSize: [28, 36],
-    iconAnchor: [14, 36],
-    popupAnchor: [0, -36],
-  })
+function formatLatLng(lat, lng) {
+  const latDir = lat >= 0 ? 'N' : 'S'
+  const lngDir = lng >= 0 ? 'E' : 'W'
+  return `${Math.abs(lat).toFixed(4)}°${latDir}, ${Math.abs(lng).toFixed(4)}°${lngDir}`
 }
 
 function DiocesanMap({ parcels }) {
@@ -56,44 +34,20 @@ function DiocesanMap({ parcels }) {
     return { district, coords, count: districtParcels.length, acreage, byCategory }
   })
 
+  const parcelCount = districtStats.reduce((sum, district) => sum + district.count, 0)
+
   return (
     <div className="diocese-map-wrap">
-      <MapContainer
-        center={[0.6527, 30.2506]}
-        zoom={8}
-        zoomControl={false}
-        scrollWheelZoom={false}
+      <iframe
+        title="Fort Portal Diocese overview map"
         className="diocese-map"
-      >
-        <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <ZoomControl position="bottomright" />
-
-        {districtStats.map(({ district, coords, count, acreage, byCategory }) => (
-          <Marker
-            key={district}
-            position={coords}
-            icon={makeIcon(count > 0 ? '#dc2626' : '#64748b')}
-          >
-            <Popup className="diocese-popup">
-              <div className="dp-header">
-                <strong>{district}</strong>
-                <span className="dp-count">{count} {count === 1 ? 'parcel' : 'parcels'}</span>
-              </div>
-              <div className="dp-acreage">{acreage.toFixed(1)} acres total</div>
-              {Object.entries(byCategory).map(([cat, n]) => (
-                <div key={cat} className="dp-cat-row">
-                  <span className="dp-cat-dot" style={{ background: CATEGORY_COLORS[cat] || '#64748b' }} />
-                  <span className="dp-cat-label">{cat}</span>
-                  <span className="dp-cat-n">{n}</span>
-                </div>
-              ))}
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+        src={getGoogleMapUrl(DEFAULT_COORDS[0], DEFAULT_COORDS[1], 8)}
+        loading="lazy"
+      />
+      <div className="diocese-map-caption">
+        <div><strong>Fort Portal Diocese overview</strong></div>
+        <div>{parcelCount} parcels across 8 districts • {formatLatLng(DEFAULT_COORDS[0], DEFAULT_COORDS[1])}</div>
+      </div>
     </div>
   )
 }
